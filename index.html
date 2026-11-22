@@ -993,9 +993,10 @@
       <div class="field">
         <label for="modelSelect">Modelo de Gemini</label>
         <select id="modelSelect">
-          <option value="gemini-3.8-flash">gemini-3.8-flash (Equilibrio ideal velocidad / calidad)</option>
-          <option value="gemini-3.8-flash-lite">gemini-3.8-flash-lite (Máxima velocidad)</option>
-        </select>
+  <option value="gemini-3.8-flash">gemini-3.8-flash (Principal - alta precisión)</option>
+  <option value="gemini-flash-lite-latest">gemini-flash-lite-latest (Ultrarrápido y sin saturación)</option>
+  <option value="gemini-4-hydrogen">gemini-4-hydrogen (Alternativo rápido)</option>
+</select>
       </div>
 
       <div class="field">
@@ -1841,8 +1842,8 @@ OTROS_USOS: (1 o 2 líneas contando en qué otros contextos suele usarse esta pa
           });
         }
 
-        if (!res.ok && res.status === 503 && model !== "gemini-3.8-flash-lite") {
-  const fallbackUrl = url.replace(model, "gemini-3.8-flash-lite");
+        if (!res.ok && (res.status === 503 || res.status === 404) && model !== "gemini-flash-lite-latest") {
+  const fallbackUrl = url.replace(model, "gemini-flash-lite-latest");
   res = await fetch(fallbackUrl, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
