@@ -1987,7 +1987,7 @@ OTROS_USOS: En este contexto, "(citá el fragmento exacto de 3 a 6 palabras de l
         generationConfig: {
           temperature: 0.25,
           maxOutputTokens: 800,
-          thinkingConfig: { thinkingLevel: "NONE" }
+          thinkingConfig: { thinkingLevel: "MINIMAL" }
         }
       };
 
@@ -2080,7 +2080,7 @@ Respondé de forma breve, clara y natural en español (máximo 4 líneas).`;
       const model = state.settings.model || "gemini-3.8-flash";
       const body = {
         contents: [{ role: "user", parts: [{ text: prompt }] }],
-        generationConfig: { temperature: 0.3, maxOutputTokens: 400, thinkingConfig: { thinkingLevel: "NONE" } }
+        generationConfig: { temperature: 0.3, maxOutputTokens: 400, thinkingConfig: { thinkingLevel: "MINIMAL" } }
       };
       try {
         const res = await callGeminiWithFallback(state.settings.apiKey.trim(), model, body, false);
@@ -2132,7 +2132,7 @@ ${sample}`;
       const model = state.settings.model || "gemini-3.8-flash";
       const body = {
         contents: [{ role: "user", parts: [{ text: prompt }] }],
-        generationConfig: { temperature: 0.1, maxOutputTokens: 250, thinkingConfig: { thinkingLevel: "NONE" } }
+        generationConfig: { temperature: 0.1, maxOutputTokens: 250, thinkingConfig: { thinkingLevel: "MINIMAL" } }
       };
 
       try {
