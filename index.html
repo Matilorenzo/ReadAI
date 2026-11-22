@@ -306,15 +306,15 @@
     }
 
     /* Floating translation above word/phrase */
-    .float-trans {
+    ..float-trans {
       position: absolute;
-      bottom: calc(100% + 7px);
+      bottom: calc(100% + 5px);
       left: 50%;
       transform: translateX(-50%);
       font-family: var(--font-ui);
-      font-size: 13px;
+      font-size: 13.5px;
       font-weight: 500;
-      line-height: 1.25;
+      line-height: 1.2;
       color: var(--accent-dark);
       white-space: nowrap;
       max-width: 280px;
@@ -322,9 +322,6 @@
       text-overflow: ellipsis;
       pointer-events: none;
       z-index: 20;
-      background: var(--bg);
-      padding: 1px 6px;
-      border-radius: 4px;
     }
     [data-theme="dark"] .float-trans { color: #52e0aa; }
     .float-trans::after {
@@ -899,14 +896,12 @@
           </div>
 
           <div class="side-section">
-            <div class="side-label">En este contexto</div>
-            <div class="side-body" id="sideContext"></div>
-          </div>
+         <div class="side-body" id="sideContext"></div>
+       </div>
 
-          <div class="side-section" id="sideOtherWrap">
-            <div class="side-label">Otros usos y matices</div>
-            <div class="side-body" id="sideOther"></div>
-          </div>
+       <div class="side-section" id="sideOtherWrap" style="border-top:none; padding-top:2px;">
+         <div class="side-body" id="sideOther"></div>
+       </div>
 
           <div class="side-chat">
             <div class="chat-history" id="chatHistory"></div>
@@ -1803,15 +1798,20 @@ He dropped onto a flat rooftop overlooking the broad boulevard and caught his br
         return;
       }
 
-      const prompt = `Sos un tutor de inglés conciso y ameno para un lector hispanohablante.
-Analizá la palabra o frase: "${term}"
+      const isSingleWord = !term.includes(" ");
+      const translationRule = isSingleWord
+        ? `TRADUCCION: (traducción directa de ESA ÚNICA PALABRA al español, idealmente 1 sola palabra respetando su forma gramatical, ej: "soaring" -> "surcando". PROHIBIDO incluir palabras vecinas de la oración como "los aires" o "por el aire")`
+        : `TRADUCCION: (traducción natural y breve de toda la expresión seleccionada al español, máximo 6 palabras)`;
+
+      const prompt = `Sos un diccionario contextual conciso para un lector hispanohablante que lee en inglés.
+Elemento seleccionado: "${term}"
 Oración anterior: "${prevSentence || "(inicio)"}"
 Oración actual: "${sentence}"
 
-Respondé EXACTAMENTE con estas 3 etiquetas, sin markdown ni asteriscos, y SIN inventar ejemplos de frases extra:
-TRADUCCION: (traducción natural y breve al español en este contexto, máximo 6 palabras)
-CONTEXTO: (2 o 3 líneas claras explicando qué transmite o implica exactamente en esta escena)
-OTROS_USOS: (1 o 2 líneas contando en qué otros contextos suele usarse esta palabra/expresión o si tiene otro significado común; si no aplica, dejalo vacío)`;
+Respondé EXACTAMENTE con estas 3 etiquetas, sin markdown ni asteriscos:
+${translationRule}
+CONTEXTO: 💡 "${term}" suele significar (definición clara y directa de la palabra/expresión en español en 1 o 2 oraciones, incluyendo su sentido figurado común si lo tiene, ej: precios que suben rápido).
+OTROS_USOS: En este contexto, "(citá el fragmento exacto de 3 a 6 palabras de la oración donde aparece)" significa "(traducción literal/natural de ese fragmento)" y se refiere a (1 oración concreta explicando qué pasa en la escena, sin análisis literario).`;
 
       const model = state.settings.model || "gemini-3.8-flash";
       const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:streamGenerateContent?alt=sse&key=${encodeURIComponent(apiKey)}`;
