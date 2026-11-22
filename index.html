@@ -215,25 +215,54 @@
     .reader-main {
       display: flex;
       flex-direction: column;
-      padding: 22px 36px 84px;
+      min-height: calc(100vh - 57px);
+      padding: 20px 36px 0;
       position: relative;
+      min-width: 0;
     }
     .reader-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 12px;
+      gap: 10px;
       margin-bottom: 18px;
       padding-bottom: 10px;
       border-bottom: 1px solid var(--border);
+      min-width: 0;
+    }
+    .reader-title-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+      flex: 1;
     }
     .reader-book-title {
-      font-size: 14px;
+      font-size: 13.5px;
       font-weight: 600;
       color: var(--text-muted);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      min-width: 0;
+    }
+    .chapter-select {
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      color: var(--text);
+      font-family: var(--font-ui);
+      font-size: 12px;
+      font-weight: 500;
+      padding: 4px 8px;
+      border-radius: 7px;
+      max-width: 210px;
+      min-width: 110px;
+      cursor: pointer;
+      outline: none;
+      flex-shrink: 0;
+    }
+    .chapter-select:hover, .chapter-select:focus {
+      border-color: var(--accent);
     }
     .reader-tools {
       display: flex;
@@ -250,6 +279,8 @@
       max-width: 720px;
       width: 100%;
       margin: 0 auto;
+      padding-bottom: 28px;
+      flex: 1;
       user-select: none;
       -webkit-user-select: none;
     }
@@ -354,15 +385,14 @@
       z-index: 25;
     }
 
-    /* Pagination Bar */
+    /* Pagination Bar (scoped strictly inside reader-main so it never overlaps side-panel) */
     .reader-footer {
-      position: fixed;
+      position: sticky;
       bottom: 0;
-      left: 0;
-      right: 360px;
       background: var(--bg);
       border-top: 1px solid var(--border);
-      padding: 10px 24px;
+      padding: 10px 0;
+      margin-top: auto;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -389,6 +419,11 @@
       display: flex;
       align-items: center;
       gap: 10px;
+      cursor: pointer;
+    }
+    .page-status:hover #pageIndicator {
+      color: var(--accent-dark);
+      text-decoration: underline;
     }
     .page-progress-mini {
       width: 110px;
@@ -408,7 +443,7 @@
     .side-panel {
       border-left: 1px solid var(--border);
       background: var(--bg);
-      padding: 24px 22px 24px;
+      padding: 24px 22px 16px;
       position: sticky;
       top: 57px;
       height: calc(100vh - 57px);
@@ -455,14 +490,6 @@
       border-top: 1px solid var(--border);
       padding-top: 13px;
     }
-    .side-label {
-      font-size: 11px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--text-muted);
-      margin-bottom: 6px;
-    }
     .side-body {
       font-size: 14.5px;
       line-height: 1.65;
@@ -482,7 +509,7 @@
 
     .side-chat {
       margin-top: auto;
-      padding-top: 14px;
+      padding-top: 12px;
       border-top: 1px solid var(--border);
     }
     .chat-history {
@@ -512,6 +539,7 @@
       padding: 8px 10px;
       border-radius: 8px;
       outline: none;
+      min-width: 0;
     }
     .chat-input:focus { border-color: var(--accent); }
 
@@ -586,6 +614,8 @@
       display: flex;
       flex-direction: column;
       gap: 10px;
+      min-width: 0;
+      overflow: hidden;
       transition: transform 0.15s, border-color 0.15s;
     }
     .book-card:hover { border-color: var(--accent); transform: translateY(-1px); }
@@ -594,12 +624,21 @@
       align-items: flex-start;
       justify-content: space-between;
       gap: 8px;
+      min-width: 0;
     }
     .book-title {
-      font-size: 16px;
+      font-size: 15.5px;
       font-weight: 700;
-      line-height: 1.3;
+      line-height: 1.35;
       cursor: pointer;
+      min-width: 0;
+      flex: 1;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
     }
     .cefr-badge {
       font-size: 11px;
@@ -616,12 +655,17 @@
     .cefr-c2 { background: #fee2e2; color: #991b1b; }
     .cefr-none { background: var(--bg-panel); color: var(--text-muted); }
 
-    .book-note { font-size: 12.5px; color: var(--text-muted); line-height: 1.45; }
+    .book-note {
+      font-size: 12.5px;
+      color: var(--text-muted);
+      line-height: 1.45;
+      overflow-wrap: anywhere;
+    }
     .book-progress-wrap {
       display: flex;
       align-items: center;
       gap: 10px;
-      margin-top: 2px;
+      margin-top: auto;
     }
     .book-progress-bar {
       flex: 1;
@@ -786,8 +830,9 @@
       .topbar { padding: 8px 12px; flex-wrap: wrap; }
       .brand span { display: none; }
       .reader-shell { grid-template-columns: 1fr; }
-      .reader-main { padding: 14px 16px 86px; }
-      .reader-footer { right: 0; padding: 8px 14px; }
+      .reader-main { padding: 14px 16px 0; }
+      .reader-book-title { display: none; }
+      .chapter-select { max-width: 165px; }
       .side-panel {
         position: fixed;
         top: auto;
@@ -852,7 +897,10 @@
     <div class="reader-shell">
       <main class="reader-main">
         <div class="reader-header">
-          <div class="reader-book-title" id="readerBookTitle">Sin libro abierto</div>
+          <div class="reader-title-group">
+            <div class="reader-book-title" id="readerBookTitle">Sin libro abierto</div>
+            <select id="chapterSelect" class="chapter-select" title="Ir a capítulo o sección" style="display:none;"></select>
+          </div>
           <div class="reader-tools">
             <button class="btn btn-sm" id="phraseModeBtn" title="Ideal en celular: tocá la primera y la última palabra de una frase">Modo Frase</button>
             <button class="btn btn-sm" id="openLibraryQuick">Libros</button>
@@ -868,7 +916,7 @@
 
         <footer class="reader-footer">
           <button class="page-nav-btn" id="prevPageBtn" title="Página anterior (←)">◀</button>
-          <div class="page-status">
+          <div class="page-status" id="pageJumpTrigger" title="Hacé clic para ir a una página específica">
             <span id="pageIndicator">Página 1 de 1 · 0%</span>
             <div class="page-progress-mini"><div id="pageProgressBar" style="width:0%"></div></div>
           </div>
@@ -889,19 +937,20 @@
               <div class="side-trans" id="sideTrans"></div>
               <div class="side-speed" id="sideSpeed"></div>
             </div>
-            <div style="display:flex; gap:6px; align-items:center;">
+            <div style="display:flex; gap:6px; align-items:center; flex-shrink:0;">
               <button class="btn btn-sm" id="speakBtn" title="Escuchar pronunciación">🔊</button>
+              <button class="btn btn-sm btn-ghost" id="unmarkBtn" title="Quitar palabra del diccionario">Quitar</button>
               <button class="mobile-close-sheet" id="closeSheetBtn" title="Cerrar">✕</button>
             </div>
           </div>
 
           <div class="side-section">
-         <div class="side-body" id="sideContext"></div>
-       </div>
+            <div class="side-body" id="sideContext"></div>
+          </div>
 
-       <div class="side-section" id="sideOtherWrap" style="border-top:none; padding-top:2px;">
-         <div class="side-body" id="sideOther"></div>
-       </div>
+          <div class="side-section" id="sideOtherWrap" style="border-top:none; padding-top:2px;">
+            <div class="side-body" id="sideOther"></div>
+          </div>
 
           <div class="side-chat">
             <div class="chat-history" id="chatHistory"></div>
@@ -988,10 +1037,10 @@
       <div class="field">
         <label for="modelSelect">Modelo de Gemini</label>
         <select id="modelSelect">
-  <option value="gemini-3.8-flash">gemini-3.8-flash (Principal - alta precisión)</option>
-  <option value="gemini-flash-lite-latest">gemini-flash-lite-latest (Ultrarrápido y sin saturación)</option>
-  <option value="gemini-4-hydrogen">gemini-4-hydrogen (Alternativo rápido)</option>
-</select>
+          <option value="gemini-3.8-flash">gemini-3.8-flash (Principal - alta precisión)</option>
+          <option value="gemini-flash-lite-latest">gemini-flash-lite-latest (Ultrarrápido y sin saturación)</option>
+          <option value="gemini-4-hydrogen">gemini-4-hydrogen (Alternativo rápido)</option>
+        </select>
       </div>
 
       <div class="field">
@@ -1087,7 +1136,7 @@ He dropped onto a flat rooftop overlooking the broad boulevard and caught his br
     };
 
     const PAGE_CHAR_BUDGET = 1550;
-    const CHUNK_CHAR_SIZE = 160000; // ~160 KB per Firestore chunk (well below 1 MB limit)
+    const CHUNK_CHAR_SIZE = 160000;
 
     let state = {
       settings: {
@@ -1100,11 +1149,11 @@ He dropped onto a flat rooftop overlooking the broad boulevard and caught his br
       },
       books: [],
       activeBookId: null,
-      vocab: {}, // key: normalized lowercase term -> { id, term, translation, context, otherUses, sentence, bookId, interval, ease, reps, nextReview, createdAt }
+      vocab: {},
       filterCefr: "ALL",
       phraseMode: false,
-      phraseAnchor: null, // { pIdx, wIdx }
-      activeSelection: null, // { pIdx, startW, endW, term, sentence, prevSentence }
+      phraseAnchor: null,
+      activeSelection: null,
       chatHistory: []
     };
 
@@ -1121,7 +1170,6 @@ He dropped onto a flat rooftop overlooking the broad boulevard and caught his br
         localStorage.setItem("cr_settings", JSON.stringify(state.settings));
         localStorage.setItem("cr_vocab", JSON.stringify(state.vocab));
         localStorage.setItem("cr_activeBookId", state.activeBookId || "");
-        // Store books metadata + text locally
         localStorage.setItem("cr_books", JSON.stringify(state.books));
       } catch (e) {
         console.warn("LocalStorage full or unavailable:", e);
@@ -1131,7 +1179,13 @@ He dropped onto a flat rooftop overlooking the broad boulevard and caught his br
     function loadLocal() {
       try {
         const s = JSON.parse(localStorage.getItem("cr_settings") || "null");
-        if (s) state.settings = { ...state.settings, ...s };
+        if (s) {
+          // Migrate retired model names automatically
+          if (s.model === "gemini-2.5-flash" || s.model === "gemini-3.8-flash-lite") {
+            s.model = "gemini-3.8-flash";
+          }
+          state.settings = { ...state.settings, ...s };
+        }
         const v = JSON.parse(localStorage.getItem("cr_vocab") || "null");
         if (v) state.vocab = v;
         const b = JSON.parse(localStorage.getItem("cr_books") || "null");
@@ -1202,7 +1256,7 @@ He dropped onto a flat rooftop overlooking the broad boulevard and caught his br
       }
     }
 
-    async function cloudDeleteBook(bookId, totalChunks = 20) {
+    async function cloudDeleteBook(bookId) {
       if (!currentUser || !fbDb) return;
       try {
         const chunksSnap = await getDocs(collection(fbDb, "users", currentUser.uid, "books", bookId, "chunks"));
@@ -1239,16 +1293,18 @@ He dropped onto a flat rooftop overlooking the broad boulevard and caught his br
       if (!currentUser || !fbDb) return;
       setSyncStatus("syncing", "Cargando nube...");
       try {
-        // 1. Settings
         const setSnap = await getDoc(doc(fbDb, "users", currentUser.uid, "settings", "main"));
         if (setSnap.exists()) {
-          state.settings = { ...state.settings, ...setSnap.data() };
+          const cloudSet = setSnap.data();
+          if (cloudSet.model === "gemini-2.5-flash" || cloudSet.model === "gemini-3.8-flash-lite") {
+            cloudSet.model = "gemini-3.8-flash";
+          }
+          state.settings = { ...state.settings, ...cloudSet };
           applySettingsUI();
         } else if (state.settings.apiKey) {
           await cloudSaveSettings();
         }
 
-        // 2. Vocab
         const vocSnap = await getDocs(collection(fbDb, "users", currentUser.uid, "vocab"));
         if (!vocSnap.empty) {
           const cloudVocab = {};
@@ -1259,7 +1315,6 @@ He dropped onto a flat rooftop overlooking the broad boulevard and caught his br
           state.vocab = { ...state.vocab, ...cloudVocab };
         }
 
-        // 3. Books metadata + chunks
         const booksSnap = await getDocs(collection(fbDb, "users", currentUser.uid, "books"));
         if (!booksSnap.empty) {
           const loadedBooks = [];
@@ -1282,7 +1337,6 @@ He dropped onto a flat rooftop overlooking the broad boulevard and caught his br
             }
           }
         } else if (state.books.length) {
-          // Upload initial local books
           for (const b of state.books) await cloudSaveBook(b, true);
         }
 
@@ -1361,7 +1415,7 @@ He dropped onto a flat rooftop overlooking the broad boulevard and caught his br
       }
     }
 
-    // ==================== PAGINATION & TOKENIZATION ====================
+    // ==================== PAGINATION, CHAPTERS & TOKENIZATION ====================
     function paginateText(text) {
       const paragraphs = (text || "").replace(/\r\n/g, "\n").split(/\n\s*\n/).map(p => p.trim()).filter(Boolean);
       const pages = [];
@@ -1382,8 +1436,78 @@ He dropped onto a flat rooftop overlooking the broad boulevard and caught his br
       return pages.length ? pages : [["(Libro vacío)"]];
     }
 
+    function extractChaptersFromPages(pages) {
+      const chapters = [];
+      const headingRegex = /^(prologue|epilogue|preface|foreword|afterword|interlude(?:\s+[ivxlcdm0-9]+)?|part\s+(?:[ivxlcdm]+|\d+|one|two|three|four|five|six|seven|eight|nine|ten)|book\s+(?:[ivxlcdm]+|\d+|one|two|three|four|five)|chapter\s+(?:[ivxlcdm]+|\d+|[a-z-]+)|cap[ií]tulo\s+\d+)(?:[:.\-—–]\s*.+)?$/i;
+      const numOnlyRegex = /^(?:[IVXLCDM]{1,6}|\d{1,3})$/;
+
+      pages.forEach((paras, pageIdx) => {
+        for (let i = 0; i < paras.length; i++) {
+          const p = paras[i].trim();
+          if (p.length > 90) continue;
+          const isNamed = headingRegex.test(p);
+          const isNumeric = numOnlyRegex.test(p) && p.length <= 8;
+          if (isNamed || isNumeric) {
+            let label = isNumeric ? `Chapter ${p}` : p;
+            // Combine subtitle if next paragraph is a short heading without terminal period
+            const nextP = paras[i + 1]?.trim();
+            if (nextP && nextP.length <= 55 && !/[.!?]$/.test(nextP) && !headingRegex.test(nextP) && !numOnlyRegex.test(nextP)) {
+              label += ` — ${nextP}`;
+            }
+            if (label.length > 52) label = label.slice(0, 49) + "...";
+            // Avoid duplicate chapters on the same page
+            if (!chapters.length || chapters[chapters.length - 1].page !== pageIdx) {
+              chapters.push({ label, page: pageIdx });
+            }
+            break;
+          }
+        }
+      });
+
+      // Fallback if no explicit chapter headings were detected
+      if (chapters.length < 2 && pages.length > 1) {
+        const fallback = [];
+        const steps = Math.min(10, pages.length);
+        for (let s = 0; s < steps; s++) {
+          const pIdx = Math.floor((s / steps) * pages.length);
+          const pct = Math.round(((pIdx + 1) / pages.length) * 100);
+          fallback.push({ label: s === 0 ? `Inicio (Pág. 1)` : `Sección ${s + 1} (${pct}% · Pág. ${pIdx + 1})`, page: pIdx });
+        }
+        return fallback;
+      }
+
+      if (chapters.length && chapters[0].page > 0) {
+        chapters.unshift({ label: "Inicio (Pág. 1)", page: 0 });
+      }
+      return chapters;
+    }
+
+    function updateChapterDropdown(pages, currentPage) {
+      const select = document.getElementById("chapterSelect");
+      const chapters = extractChaptersFromPages(pages);
+      if (!chapters.length || pages.length <= 1) {
+        select.style.display = "none";
+        return;
+      }
+      select.style.display = "inline-block";
+      select.innerHTML = "";
+
+      let activeChapterPage = chapters[0].page;
+      for (const ch of chapters) {
+        if (ch.page <= currentPage) activeChapterPage = ch.page;
+        else break;
+      }
+
+      chapters.forEach(ch => {
+        const opt = document.createElement("option");
+        opt.value = String(ch.page);
+        opt.textContent = `${ch.label} (p. ${ch.page + 1})`;
+        if (ch.page === activeChapterPage) opt.selected = true;
+        select.appendChild(opt);
+      });
+    }
+
     function tokenizeParagraph(pText) {
-      // Splits into words (with internal apostrophes/hyphens) and non-words
       const regex = /([A-Za-zÀ-ÖØ-öø-ÿ]+(?:['’-][A-Za-zÀ-ÖØ-öø-ÿ]+)*)|([^A-Za-zÀ-ÖØ-öø-ÿ]+)/g;
       const tokens = [];
       let match, wIdx = 0;
@@ -1416,7 +1540,7 @@ He dropped onto a flat rooftop overlooking the broad boulevard and caught his br
     let currentPages = [];
     let currentParagraphTexts = [];
     let isDragging = false;
-    let dragStart = null; // { pIdx, wIdx }
+    let dragStart = null;
     let dragEnd = null;
 
     function getActiveBook() {
@@ -1430,6 +1554,7 @@ He dropped onto a flat rooftop overlooking the broad boulevard and caught his br
 
       if (!book) {
         titleEl.textContent = "Sin libro abierto";
+        document.getElementById("chapterSelect").style.display = "none";
         container.innerHTML = `<p style="color:var(--text-muted)">Andá a la pestaña <strong>Biblioteca</strong> para subir un libro o pegar un texto.</p>`;
         return;
       }
@@ -1441,7 +1566,11 @@ He dropped onto a flat rooftop overlooking the broad boulevard and caught his br
       const pct = currentPages.length <= 1 ? 100 : Math.round(((book.currentPage + 1) / currentPages.length) * 100);
       book.progressPct = pct;
 
-      titleEl.textContent = book.title + (book.cefr ? ` · ${book.cefr}` : "");
+      const cleanTitle = formatDisplayTitle(book.title);
+      titleEl.textContent = cleanTitle + (book.cefr ? ` · ${book.cefr}` : "");
+      titleEl.title = book.title;
+      updateChapterDropdown(currentPages, book.currentPage);
+
       document.getElementById("pageIndicator").textContent = `Página ${book.currentPage + 1} de ${currentPages.length} · ${pct}%`;
       document.getElementById("pageProgressBar").style.width = pct + "%";
       document.getElementById("prevPageBtn").disabled = book.currentPage === 0;
@@ -1475,7 +1604,6 @@ He dropped onto a flat rooftop overlooking the broad boulevard and caught his br
         container.appendChild(pEl);
       });
 
-      // Reapply active mark if on same page
       if (state.activeSelection && state.activeSelection.page === book.currentPage) {
         applyActiveHighlight(state.activeSelection.pIdx, state.activeSelection.startW, state.activeSelection.endW, state.activeSelection.translation);
       }
@@ -1555,7 +1683,7 @@ He dropped onto a flat rooftop overlooking the broad boulevard and caught his br
       }
     }
 
-    // ==================== INTERACTION (DESKTOP DRAG + CLICK TOGGLE + MOBILE PHRASE MODE) ====================
+    // ==================== INTERACTION (DESKTOP DRAG + CLICK + MOBILE PHRASE MODE) ====================
     const pageContentEl = document.getElementById("pageContent");
 
     pageContentEl.addEventListener("mousedown", (e) => {
@@ -1589,7 +1717,6 @@ He dropped onto a flat rooftop overlooking the broad boulevard and caught his br
       handleTokenSelection(pIdx, sW, eW);
     });
 
-    // Touch / Mobile Phrase Mode click handler
     pageContentEl.addEventListener("click", (e) => {
       if (!state.phraseMode) return;
       const tok = e.target.closest(".w-tok");
@@ -1610,6 +1737,27 @@ He dropped onto a flat rooftop overlooking the broad boulevard and caught his br
       }
     });
 
+    function unmarkTerm(term) {
+      const key = normalizeTerm(term);
+      delete state.vocab[key];
+      saveLocal();
+      cloudDeleteVocabItem(key);
+      updateBadges();
+      document.querySelectorAll(".w-tok").forEach(el => {
+        if (normalizeTerm(el.childNodes[0].textContent) === key) {
+          el.classList.remove("saved");
+          delete el.dataset.trans;
+        }
+      });
+      if (state.activeSelection && normalizeTerm(state.activeSelection.term) === key) {
+        clearActiveHighlights();
+        state.activeSelection = null;
+        document.getElementById("sideFilled").style.display = "none";
+        document.getElementById("sideEmpty").style.display = "block";
+      }
+      showToast(`"${term}" desmarcada y quitada del diccionario`);
+    }
+
     async function handleTokenSelection(pIdx, startW, endW) {
       const book = getActiveBook();
       if (!book) return;
@@ -1617,30 +1765,21 @@ He dropped onto a flat rooftop overlooking the broad boulevard and caught his br
       if (!term) return;
       const key = normalizeTerm(term);
 
-      // Single word toggle: if already saved AND clicked singly -> unmark & remove from vocab
-      if (startW === endW && state.vocab[key]) {
-        const isAlreadyActive = state.activeSelection && state.activeSelection.pIdx === pIdx && state.activeSelection.startW === startW && state.activeSelection.endW === endW;
-        delete state.vocab[key];
-        saveLocal();
-        cloudDeleteVocabItem(key);
-        updateBadges();
-        // Remove underline on all occurrences
-        document.querySelectorAll(".w-tok").forEach(el => {
-          if (normalizeTerm(el.childNodes[0].textContent) === key) {
-            el.classList.remove("saved");
-            delete el.dataset.trans;
-          }
-        });
-        if (isAlreadyActive) {
-          clearActiveHighlights();
-          state.activeSelection = null;
-        }
-        showToast(`"${term}" desmarcada y quitada del diccionario`);
+      // If single word is ALREADY highlighted right now -> toggle off
+      const isAlreadyActive = state.activeSelection &&
+        state.activeSelection.page === book.currentPage &&
+        state.activeSelection.pIdx === pIdx &&
+        state.activeSelection.startW === startW &&
+        state.activeSelection.endW === endW;
+
+      if (startW === endW && isAlreadyActive && state.vocab[key]) {
+        unmarkTerm(term);
         return;
       }
 
       const pText = currentParagraphTexts[pIdx] || "";
       const { sentence, prevSentence } = extractSentenceContext(pText, term);
+      const existingSaved = state.vocab[key];
 
       state.activeSelection = {
         page: book.currentPage,
@@ -1650,19 +1789,19 @@ He dropped onto a flat rooftop overlooking the broad boulevard and caught his br
         term,
         sentence,
         prevSentence,
-        translation: "..."
+        translation: existingSaved?.translation || "..."
       };
       state.chatHistory = [];
 
-      applyActiveHighlight(pIdx, startW, endW, "...");
-      openSidePanelLoading(term);
+      applyActiveHighlight(pIdx, startW, endW, state.activeSelection.translation);
+      openSidePanelLoading(term, existingSaved?.translation);
 
       const t0 = performance.now();
       let fastTime = null;
-      let fastResult = "";
+      let fastResult = existingSaved?.translation || "";
 
-      // 1. Fast translator in parallel
-      const fastPromise = (state.settings.fastTranslator !== "none")
+      // 1. Fast translator in parallel (unless already saved)
+      const fastPromise = (!fastResult && state.settings.fastTranslator !== "none")
         ? fetchFastTranslation(term, state.settings.fastTranslator).then(tr => {
             if (tr && state.activeSelection?.term === term) {
               fastResult = tr;
@@ -1676,7 +1815,7 @@ He dropped onto a flat rooftop overlooking the broad boulevard and caught his br
           }).catch(() => {})
         : Promise.resolve();
 
-      // 2. Gemini Streaming in parallel
+      // 2. Gemini Streaming in parallel (always fetches fresh contextual explanation for the current sentence)
       const aiPromise = streamGeminiExplanation(term, sentence, prevSentence, {
         onTranslation: (aiTrans) => {
           if (state.activeSelection?.term !== term) return;
@@ -1749,7 +1888,6 @@ He dropped onto a flat rooftop overlooking the broad boulevard and caught his br
       cloudSaveVocabItem(item);
       updateBadges();
 
-      // Mark single-word occurrences on current page
       if (!key.includes(" ")) {
         document.querySelectorAll(".w-tok").forEach(el => {
           if (normalizeTerm(el.childNodes[0].textContent) === key) {
@@ -1760,11 +1898,11 @@ He dropped onto a flat rooftop overlooking the broad boulevard and caught his br
       }
     }
 
-    function openSidePanelLoading(term) {
+    function openSidePanelLoading(term, knownTrans = "") {
       document.getElementById("sideEmpty").style.display = "none";
       document.getElementById("sideFilled").style.display = "flex";
       document.getElementById("sideWord").textContent = term;
-      document.getElementById("sideTrans").textContent = "Traduciendo...";
+      document.getElementById("sideTrans").textContent = knownTrans || "Traduciendo...";
       document.getElementById("sideSpeed").textContent = "";
       document.getElementById("sideContext").innerHTML = '<span style="color:var(--text-muted)">Analizando contexto...</span>';
       document.getElementById("sideOtherWrap").style.display = "none";
@@ -1791,6 +1929,36 @@ He dropped onto a flat rooftop overlooking the broad boulevard and caught his br
       return "";
     }
 
+    async function callGeminiWithFallback(apiKey, model, body, isStream = false) {
+      const endpoint = isStream ? "streamGenerateContent?alt=sse&" : "generateContent?";
+      const makeUrl = (m) => `https://generativelanguage.googleapis.com/v1beta/models/${m}:${endpoint}key=${encodeURIComponent(apiKey)}`;
+
+      const tryRequest = async (m, payload) => {
+        return fetch(makeUrl(m), {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+      };
+
+      let res = await tryRequest(model, body);
+
+      // If thinkingConfig causes 400, retry with MINIMAL or without thinkingConfig
+      if (!res.ok && res.status === 400 && body.generationConfig?.thinkingConfig) {
+        const altBody = JSON.parse(JSON.stringify(body));
+        delete altBody.generationConfig.thinkingConfig;
+        res = await tryRequest(model, altBody);
+        if (res.ok) body = altBody;
+      }
+
+      // If overloaded (503) or model not found (404), auto-fallback to gemini-flash-lite-latest
+      if (!res.ok && (res.status === 503 || res.status === 404) && model !== "gemini-flash-lite-latest") {
+        res = await tryRequest("gemini-flash-lite-latest", body);
+      }
+
+      return res;
+    }
+
     async function streamGeminiExplanation(term, sentence, prevSentence, callbacks) {
       const apiKey = state.settings.apiKey.trim();
       if (!apiKey) {
@@ -1800,7 +1968,7 @@ He dropped onto a flat rooftop overlooking the broad boulevard and caught his br
 
       const isSingleWord = !term.includes(" ");
       const translationRule = isSingleWord
-        ? `TRADUCCION: (traducción directa de ESA ÚNICA PALABRA al español, idealmente 1 sola palabra respetando su forma gramatical, ej: "soaring" -> "surcando". PROHIBIDO incluir palabras vecinas de la oración como "los aires" o "por el aire")`
+        ? `TRADUCCION: (traducción directa de ESA ÚNICA PALABRA al español, idealmente 1 sola palabra respetando su forma gramatical, ej: "soaring" -> "surcando", "building" -> "edificio". PROHIBIDO incluir palabras vecinas de la oración)`
         : `TRADUCCION: (traducción natural y breve de toda la expresión seleccionada al español, máximo 6 palabras)`;
 
       const prompt = `Sos un diccionario contextual conciso para un lector hispanohablante que lee en inglés.
@@ -1810,52 +1978,27 @@ Oración actual: "${sentence}"
 
 Respondé EXACTAMENTE con estas 3 etiquetas, sin markdown ni asteriscos:
 ${translationRule}
-CONTEXTO: 💡 "${term}" suele significar (definición principal clara y directa en español, en 1 oración). También se usa con frecuencia en sentido figurado o en otros contextos cotidianos para indicar (explicá en 1 oración su otro uso más común con un ejemplo breve en español de 2 o 3 palabras, como "los precios que suben rápido"; solo omití esta segunda oración si es una palabra exclusivamente técnica sin otro uso).
+CONTEXTO: 💡 "${term}" suele significar (definición principal clara y directa en español, en 1 oración). También se usa con frecuencia en sentido figurado o en otros contextos cotidianos para indicar (explicá en 1 oración su otro uso más común con un ejemplo breve en español de 2 o 3 palabras, como "los precios que suben rápido" o "la acción de construir"; solo omití esta segunda oración si es una palabra exclusivamente técnica sin otro uso).
 OTROS_USOS: En este contexto, "(citá el fragmento exacto de 3 a 6 palabras de la oración donde aparece)" significa "(traducción natural de ese fragmento)" y se refiere a (1 oración concreta explicando qué ocurre en la escena, sin análisis literario).`;
 
       const model = state.settings.model || "gemini-3.8-flash";
-      const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:streamGenerateContent?alt=sse&key=${encodeURIComponent(apiKey)}`;
-
       const body = {
         contents: [{ role: "user", parts: [{ text: prompt }] }],
         generationConfig: {
           temperature: 0.25,
-          maxOutputTokens: 320,
+          maxOutputTokens: 800,
           thinkingConfig: { thinkingLevel: "NONE" }
         }
       };
 
       try {
-        let res = await fetch(url, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(body)
-        });
+        const res = await callGeminiWithFallback(apiKey, model, body, true);
 
-        // Fallback if thinkingConfig is rejected by a model
-        if (!res.ok && res.status === 400) {
-          delete body.generationConfig.thinkingConfig;
-          res = await fetch(url, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(body)
-          });
+        if (!res.ok) {
+          const errData = await res.json().catch(() => ({}));
+          callbacks.onError("Error de Gemini: " + (errData?.error?.message || res.statusText));
+          return;
         }
-
-        if (!res.ok && (res.status === 503 || res.status === 404) && model !== "gemini-flash-lite-latest") {
-  const fallbackUrl = url.replace(model, "gemini-flash-lite-latest");
-  res = await fetch(fallbackUrl, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(body)
-  });
-}
-
-if (!res.ok) {
-  const errData = await res.json().catch(() => ({}));
-  callbacks.onError("Error de Gemini: " + (errData?.error?.message || res.statusText));
-  return;
-}
 
         const reader = res.body.getReader();
         const decoder = new TextDecoder("utf-8");
@@ -1875,14 +2018,16 @@ if (!res.ok) {
             if (!jsonStr || jsonStr === "[DONE]") continue;
             try {
               const parsed = JSON.parse(jsonStr);
-              const chunk = parsed?.candidates?.[0]?.content?.parts?.[0]?.text || "";
-              if (chunk) {
-                fullText += chunk;
-                const fields = parseTaggedOutput(fullText);
-                if (fields.translation) callbacks.onTranslation(fields.translation);
-                if (fields.context) callbacks.onContext(fields.context);
-                if (fields.otherUses) callbacks.onOther(fields.otherUses);
+              const parts = parsed?.candidates?.[0]?.content?.parts || [];
+              for (const p of parts) {
+                if (p && !p.thought && p.text) {
+                  fullText += p.text;
+                }
               }
+              const fields = parseTaggedOutput(fullText);
+              if (fields.translation) callbacks.onTranslation(fields.translation);
+              if (fields.context) callbacks.onContext(fields.context);
+              if (fields.otherUses) callbacks.onOther(fields.otherUses);
             } catch (_) {}
           }
         }
@@ -1895,14 +2040,22 @@ if (!res.ok) {
     }
 
     function parseTaggedOutput(txt) {
-      const trMatch = txt.match(/TRADUCCION:\s*([^\n]+)/i);
-      const ctxMatch = txt.match(/CONTEXTO:\s*([\s\S]*?)(?=OTROS_USOS:|$)/i);
-      const othMatch = txt.match(/OTROS_USOS:\s*([\s\S]*)$/i);
-      return {
-        translation: trMatch ? trMatch[1].trim() : "",
-        context: ctxMatch ? ctxMatch[1].trim() : "",
-        otherUses: othMatch ? othMatch[1].trim() : ""
-      };
+      const clean = (txt || "").replace(/\*\*/g, "").trim();
+      const trMatch = clean.match(/TRADUCCI[OÓ]N:\s*([^\n]+)/i);
+      const ctxMatch = clean.match(/CONTEXTO:\s*([\s\S]*?)(?=OTROS[_ ]USOS:|$)/i);
+      const othMatch = clean.match(/OTROS[_ ]USOS:\s*([\s\S]*)$/i);
+
+      let translation = trMatch ? trMatch[1].trim() : "";
+      let context = ctxMatch ? ctxMatch[1].trim() : "";
+      let otherUses = othMatch ? othMatch[1].trim() : "";
+
+      // Fallback if Gemini answered without the labels
+      if (!context && !otherUses && clean) {
+        const withoutTr = clean.replace(/TRADUCCI[OÓ]N:\s*[^\n]+\n?/i, "").trim();
+        if (withoutTr) context = withoutTr;
+      }
+
+      return { translation, context, otherUses };
     }
 
     // Mini Chat
@@ -1925,18 +2078,16 @@ El usuario pregunta en español: "${q}"
 Respondé de forma breve, clara y natural en español (máximo 4 líneas).`;
 
       const model = state.settings.model || "gemini-3.8-flash";
-      const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${encodeURIComponent(state.settings.apiKey.trim())}`;
+      const body = {
+        contents: [{ role: "user", parts: [{ text: prompt }] }],
+        generationConfig: { temperature: 0.3, maxOutputTokens: 400, thinkingConfig: { thinkingLevel: "NONE" } }
+      };
       try {
-        const res = await fetch(url, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            contents: [{ role: "user", parts: [{ text: prompt }] }],
-            generationConfig: { temperature: 0.3, maxOutputTokens: 250, thinkingConfig: { thinkingLevel: "NONE" } }
-          })
-        });
+        const res = await callGeminiWithFallback(state.settings.apiKey.trim(), model, body, false);
         const data = await res.json();
-        aiEl.textContent = data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || "No se pudo obtener respuesta.";
+        const parts = data?.candidates?.[0]?.content?.parts || [];
+        const reply = parts.filter(p => !p.thought && p.text).map(p => p.text).join("").trim();
+        aiEl.textContent = reply || "No se pudo obtener respuesta.";
       } catch (err) {
         aiEl.textContent = "Error al conectar con Gemini.";
       }
@@ -1964,30 +2115,35 @@ Respondé de forma breve, clara y natural en español (máximo 4 líneas).`;
       return `[Fragmento 1]\n${take(0.15)}\n\n[Fragmento 2]\n${take(0.50)}\n\n[Fragmento 3]\n${take(0.80)}`;
     }
 
-    async function classifyBookCefr(book) {
+    async function classifyBookCefr(book, manualTrigger = false) {
       const apiKey = state.settings.apiKey.trim();
-      if (!apiKey) return;
+      if (!apiKey) {
+        if (manualTrigger) showToast("Pegá tu API Key de Gemini en Ajustes primero.");
+        return;
+      }
       const sample = sampleBookForCefr(book.text);
       const prompt = `Evaluá el nivel de inglés (marco CEFR: A1, A2, B1, B1-B2, B2, B2-C1, C1 o C2) de este libro a partir de estos fragmentos representativos.
-Respondé EXACTAMENTE en 2 líneas sin markdown:
+Respondé EXACTAMENTE en 2 líneas sin markdown ni asteriscos:
 NIVEL: (solo el código, ej: B2 o B1-B2)
 NOTA: (una frase muy breve en español describiendo el estilo y vocabulario, máx 12 palabras)
 
 ${sample}`;
 
       const model = state.settings.model || "gemini-3.8-flash";
-      const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${encodeURIComponent(apiKey)}`;
+      const body = {
+        contents: [{ role: "user", parts: [{ text: prompt }] }],
+        generationConfig: { temperature: 0.1, maxOutputTokens: 250, thinkingConfig: { thinkingLevel: "NONE" } }
+      };
+
       try {
-        const res = await fetch(url, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            contents: [{ role: "user", parts: [{ text: prompt }] }],
-            generationConfig: { temperature: 0.1, maxOutputTokens: 100, thinkingConfig: { thinkingLevel: "NONE" } }
-          })
-        });
+        const res = await callGeminiWithFallback(apiKey, model, body, false);
         const data = await res.json();
-        const out = data?.candidates?.[0]?.content?.parts?.[0]?.text || "";
+        if (!res.ok) {
+          if (manualTrigger) showToast("Error Gemini: " + (data?.error?.message || res.statusText));
+          return;
+        }
+        const parts = data?.candidates?.[0]?.content?.parts || [];
+        const out = parts.filter(p => !p.thought && p.text).map(p => p.text).join("\n").replace(/\*\*/g, "");
         const lvl = (out.match(/NIVEL:\s*([A-C][1-2](?:-[A-C][1-2])?)/i) || [])[1];
         const note = (out.match(/NOTA:\s*(.+)/i) || [])[1];
         if (lvl) {
@@ -1997,17 +2153,32 @@ ${sample}`;
           cloudSaveBook(book, false);
           renderLibrary();
           if (state.activeBookId === book.id) renderReader();
+          if (manualTrigger) showToast(`Nivel asignado: ${book.cefr}`);
+        } else if (manualTrigger) {
+          showToast("No se pudo detectar el nivel CEFR. Probá de nuevo.");
         }
       } catch (e) {
         console.warn("CEFR error:", e);
+        if (manualTrigger) showToast("Error de red al analizar el nivel.");
       }
     }
 
     // ==================== FILE IMPORTS (EPUB, PDF, TXT) ====================
+    function formatDisplayTitle(raw) {
+      if (!raw) return "Sin título";
+      let t = raw.trim();
+      // Clean Anna's Archive / Z-Library long filenames for cleaner display
+      t = t.replace(/\s*--\s*isbn13?\s*[0-9xX-]+.*$/i, "");
+      t = t.replace(/\s*--\s*[a-f0-9]{24,}.*$/i, "");
+      t = t.replace(/\s*--\s*Anna['’]s Archive.*$/i, "");
+      t = t.replace(/\s*\(Z-Library\).*$/i, "");
+      return t.trim() || raw.trim();
+    }
+
     async function handleFileUpload(file) {
       if (!file) return;
       const ext = file.name.split(".").pop().toLowerCase();
-      const title = file.name.replace(/\.[^.]+$/, "");
+      let title = formatDisplayTitle(file.name.replace(/\.[^.]+$/, ""));
       showToast("Procesando " + file.name + "...");
 
       try {
@@ -2015,7 +2186,9 @@ ${sample}`;
         if (ext === "txt") {
           text = await file.text();
         } else if (ext === "epub") {
-          text = await parseEpub(file);
+          const parsed = await parseEpub(file);
+          text = parsed.text;
+          if (parsed.title) title = parsed.title;
         } else if (ext === "pdf") {
           text = await parsePdf(file);
         } else {
@@ -2049,6 +2222,8 @@ ${sample}`;
       const opfXml = await zip.file(opfPath).async("text");
       const opfDoc = parser.parseFromString(opfXml, "application/xml");
 
+      const dcTitle = opfDoc.querySelector("metadata title, dc\\:title")?.textContent?.trim() || "";
+
       const manifest = {};
       opfDoc.querySelectorAll("manifest item").forEach(it => {
         manifest[it.getAttribute("id")] = it.getAttribute("href");
@@ -2067,10 +2242,10 @@ ${sample}`;
         const docHtml = parser.parseFromString(html, "text/html");
         docHtml.querySelectorAll("p, h1, h2, h3, blockquote").forEach(el => {
           const t = el.textContent.replace(/\s+/g, " ").trim();
-          if (t.length > 1) paragraphs.push(t);
+          if (t.length > 0) paragraphs.push(t);
         });
       }
-      return paragraphs.join("\n\n");
+      return { text: paragraphs.join("\n\n"), title: dcTitle };
     }
 
     async function parsePdf(file) {
@@ -2104,12 +2279,11 @@ ${sample}`;
       renderLibrary();
       renderReader();
       switchView("reader");
-      showToast(`"${book.title}" agregado`);
+      showToast(`"${formatDisplayTitle(book.title)}" agregado`);
 
-      // Sync to cloud + classify CEFR in background
       cloudSaveBook(book, true);
       if (state.settings.apiKey.trim()) {
-        classifyBookCefr(book);
+        classifyBookCefr(book, false);
       }
     }
 
@@ -2140,14 +2314,15 @@ ${sample}`;
       filtered.forEach(book => {
         const totalPages = paginateText(book.text).length;
         const pct = typeof book.progressPct === "number" ? book.progressPct : Math.round(((book.currentPage + 1) / totalPages) * 100);
+        const displayTitle = formatDisplayTitle(book.title);
         const card = document.createElement("div");
         card.className = "book-card";
         card.innerHTML = `
           <div class="book-top">
-            <div class="book-title">${escapeHtml(book.title)}</div>
+            <div class="book-title" title="${escapeHtml(book.title)}">${escapeHtml(displayTitle)}</div>
             <span class="cefr-badge ${cefrBadgeClass(book.cefr)}">${book.cefr || "Sin nivel"}</span>
           </div>
-          <div class="book-note">${escapeHtml(book.cefrNote || "Analizalo con Gemini para ver su nivel CEFR.")}</div>
+          <div class="book-note">${escapeHtml(book.cefrNote || "Tocá 'Nivel' para clasificarlo con Gemini.")}</div>
           <div class="book-progress-wrap">
             <div class="book-progress-bar"><div class="book-progress-fill" style="width:${pct}%"></div></div>
             <div class="book-progress-pct">${pct}%</div>
@@ -2170,16 +2345,17 @@ ${sample}`;
         };
         card.querySelector(".book-title").onclick = openBook;
         card.querySelector(".open-btn").onclick = openBook;
-        card.querySelector(".analyze-btn").onclick = async () => {
-          if (!state.settings.apiKey.trim()) {
-            showToast("Pegá tu API Key de Gemini en Ajustes primero.");
-            return;
-          }
+        const analyzeBtn = card.querySelector(".analyze-btn");
+        analyzeBtn.onclick = async () => {
+          analyzeBtn.disabled = true;
+          analyzeBtn.textContent = "...";
           showToast("Analizando nivel CEFR...");
-          await classifyBookCefr(book);
+          await classifyBookCefr(book, true);
+          analyzeBtn.disabled = false;
+          analyzeBtn.textContent = "Nivel";
         };
         card.querySelector(".del-btn").onclick = async () => {
-          if (!confirm(`¿Eliminar "${book.title}"?`)) return;
+          if (!confirm(`¿Eliminar "${displayTitle}"?`)) return;
           state.books = state.books.filter(x => x.id !== book.id);
           if (state.activeBookId === book.id) state.activeBookId = state.books[0]?.id || null;
           saveLocal();
@@ -2405,17 +2581,23 @@ ${sample}`;
       toastTimer = setTimeout(() => t.classList.remove("show"), 2600);
     }
 
-    function changePage(delta) {
+    function goToPage(targetPage) {
       const book = getActiveBook();
       if (!book) return;
-      const next = book.currentPage + delta;
-      if (next < 0 || next >= currentPages.length) return;
-      book.currentPage = next;
+      const clamped = Math.max(0, Math.min(currentPages.length - 1, targetPage));
+      if (clamped === book.currentPage) return;
+      book.currentPage = clamped;
       state.activeSelection = null;
       saveLocal();
       renderReader();
       window.scrollTo({ top: 0, behavior: "smooth" });
       cloudSaveBook(book, false);
+    }
+
+    function changePage(delta) {
+      const book = getActiveBook();
+      if (!book) return;
+      goToPage(book.currentPage + delta);
     }
 
     function renderAll() {
@@ -2436,6 +2618,19 @@ ${sample}`;
     document.getElementById("settingsBtn").onclick = openSettingsModal;
     document.getElementById("closeSettingsBtn").onclick = closeSettingsModal;
 
+    document.getElementById("chapterSelect").onchange = (e) => {
+      goToPage(Number(e.target.value));
+    };
+
+    document.getElementById("pageJumpTrigger").onclick = () => {
+      const book = getActiveBook();
+      if (!book || currentPages.length <= 1) return;
+      const input = prompt(`Ir a la página (1 - ${currentPages.length}):`, String(book.currentPage + 1));
+      if (!input) return;
+      const num = parseInt(input, 10);
+      if (!isNaN(num)) goToPage(num - 1);
+    };
+
     document.getElementById("fontSizeRange").oninput = (e) => {
       document.getElementById("fontSizeVal").textContent = e.target.value + "px";
       document.documentElement.style.setProperty("--reader-size", e.target.value + "px");
@@ -2455,7 +2650,6 @@ ${sample}`;
       showToast("Ajustes guardados");
     };
 
-    // Phrase mode toggle
     function setPhraseMode(on) {
       state.phraseMode = on;
       state.phraseAnchor = null;
@@ -2467,25 +2661,25 @@ ${sample}`;
     document.getElementById("phraseModeBtn").onclick = () => setPhraseMode(!state.phraseMode);
     document.getElementById("cancelPhraseBtn").onclick = () => setPhraseMode(false);
 
-    // Pagination & keyboard
     document.getElementById("prevPageBtn").onclick = () => changePage(-1);
     document.getElementById("nextPageBtn").onclick = () => changePage(1);
     window.addEventListener("keydown", (e) => {
-      if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return;
+      if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA" || e.target.tagName === "SELECT") return;
       if (!document.getElementById("view-reader").classList.contains("active")) return;
       if (e.key === "ArrowLeft") changePage(-1);
       if (e.key === "ArrowRight") changePage(1);
     });
 
-    // Side panel actions
     document.getElementById("speakBtn").onclick = () => {
       if (state.activeSelection?.term) speakEnglish(state.activeSelection.term);
+    };
+    document.getElementById("unmarkBtn").onclick = () => {
+      if (state.activeSelection?.term) unmarkTerm(state.activeSelection.term);
     };
     document.getElementById("closeSheetBtn").onclick = () => {
       document.getElementById("sidePanel").classList.remove("mobile-open");
     };
 
-    // Upload & Drag/Drop
     document.getElementById("fileInput").onchange = (e) => {
       handleFileUpload(e.target.files[0]);
       e.target.value = "";
@@ -2499,7 +2693,6 @@ ${sample}`;
       handleFileUpload(e.dataTransfer.files[0]);
     });
 
-    // Paste modal
     const pasteModal = document.getElementById("pasteModal");
     document.getElementById("openPasteModalBtn").onclick = () => pasteModal.classList.add("open");
     document.getElementById("closePasteBtn").onclick = () => pasteModal.classList.remove("open");
@@ -2514,7 +2707,6 @@ ${sample}`;
       addBookToLibrary(t, b);
     };
 
-    // CEFR Filters
     document.querySelectorAll("#cefrFilters .chip").forEach(ch => {
       ch.onclick = () => {
         document.querySelectorAll("#cefrFilters .chip").forEach(c => c.classList.remove("active"));
@@ -2524,7 +2716,6 @@ ${sample}`;
       };
     });
 
-    // Vocab search & export
     document.getElementById("vocabSearch").oninput = renderVocab;
     document.getElementById("exportTsvBtn").onclick = () => exportVocab("tsv");
     document.getElementById("exportCsvBtn").onclick = () => exportVocab("csv");
