@@ -1820,7 +1820,7 @@ OTROS_USOS: (1 o 2 líneas contando en qué otros contextos suele usarse esta pa
         generationConfig: {
           temperature: 0.25,
           maxOutputTokens: 320,
-          thinkingConfig: { thinkingBudget: 0 }
+          thinkingConfig: { thinkingLevel: "NONE" }
         }
       };
 
@@ -1841,11 +1841,20 @@ OTROS_USOS: (1 o 2 líneas contando en qué otros contextos suele usarse esta pa
           });
         }
 
-        if (!res.ok) {
-          const errData = await res.json().catch(() => ({}));
-          callbacks.onError("Error de Gemini: " + (errData?.error?.message || res.statusText));
-          return;
-        }
+        if (!res.ok && res.status === 503 && model !== "gemini-3.8-flash-lite") {
+  const fallbackUrl = url.replace(model, "gemini-3.8-flash-lite");
+  res = await fetch(fallbackUrl, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body)
+  });
+}
+
+if (!res.ok) {
+  const errData = await res.json().catch(() => ({}));
+  callbacks.onError("Error de Gemini: " + (errData?.error?.message || res.statusText));
+  return;
+}
 
         const reader = res.body.getReader();
         const decoder = new TextDecoder("utf-8");
@@ -1922,7 +1931,7 @@ Respondé de forma breve, clara y natural en español (máximo 4 líneas).`;
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             contents: [{ role: "user", parts: [{ text: prompt }] }],
-            generationConfig: { temperature: 0.3, maxOutputTokens: 250, thinkingConfig: { thinkingBudget: 0 } }
+            generationConfig: { temperature: 0.3, maxOutputTokens: 250, thinkingConfig: { thinkingLevel: "NONE" } }
           })
         });
         const data = await res.json();
@@ -1973,7 +1982,7 @@ ${sample}`;
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             contents: [{ role: "user", parts: [{ text: prompt }] }],
-            generationConfig: { temperature: 0.1, maxOutputTokens: 100, thinkingConfig: { thinkingBudget: 0 } }
+            generationConfig: { temperature: 0.1, maxOutputTokens: 100, thinkingConfig: { thinkingLevel: "NONE" } }
           })
         });
         const data = await res.json();
