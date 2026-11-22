@@ -306,7 +306,7 @@
     }
 
     /* Floating translation above word/phrase */
-    ..float-trans {
+    .float-trans {
       position: absolute;
       bottom: calc(100% + 5px);
       left: 50%;
@@ -1810,8 +1810,8 @@ Oración actual: "${sentence}"
 
 Respondé EXACTAMENTE con estas 3 etiquetas, sin markdown ni asteriscos:
 ${translationRule}
-CONTEXTO: 💡 "${term}" suele significar (definición clara y directa de la palabra/expresión en español en 1 o 2 oraciones, incluyendo su sentido figurado común si lo tiene, ej: precios que suben rápido).
-OTROS_USOS: En este contexto, "(citá el fragmento exacto de 3 a 6 palabras de la oración donde aparece)" significa "(traducción literal/natural de ese fragmento)" y se refiere a (1 oración concreta explicando qué pasa en la escena, sin análisis literario).`;
+CONTEXTO: 💡 "${term}" suele significar (definición principal clara y directa en español, en 1 oración). También se usa con frecuencia en sentido figurado o en otros contextos cotidianos para indicar (explicá en 1 oración su otro uso más común con un ejemplo breve en español de 2 o 3 palabras, como "los precios que suben rápido"; solo omití esta segunda oración si es una palabra exclusivamente técnica sin otro uso).
+OTROS_USOS: En este contexto, "(citá el fragmento exacto de 3 a 6 palabras de la oración donde aparece)" significa "(traducción natural de ese fragmento)" y se refiere a (1 oración concreta explicando qué ocurre en la escena, sin análisis literario).`;
 
       const model = state.settings.model || "gemini-3.8-flash";
       const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:streamGenerateContent?alt=sse&key=${encodeURIComponent(apiKey)}`;
